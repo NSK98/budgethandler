@@ -107,11 +107,13 @@ var UIController = (function() {
         DOMStrings.inputDescription + ", " + DOMStrings.inputValue
       );
 
-      fieldsArray = Array.prototype.slice.call(fields);
+      fieldsArray = Array.prototype.slice.call(fields); // converting list from querySelectorAll to Array
 
       fieldsArray.forEach(function(current, index, array) {
         current.value = "";
       });
+
+      fieldsArray[0].focus();
     }
   };
 })();
