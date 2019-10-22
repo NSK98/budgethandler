@@ -1,5 +1,10 @@
 {
     "editor.fontSize": 15,
     "editor.fontFamily": "Menlo, Consolas, DejaVu Sans Mono, monospace",
-    "editor.wordWrap": "on"
+    "editor.wordWrap": "on",
+    "files.exclude": {
+        "**/.vscode": true
+    },
+    "workbench.colorTheme": "Material Theme Darker High Contrast",
+    "workbench.iconTheme": "material-icon-theme"
 }
