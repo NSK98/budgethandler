@@ -151,7 +151,7 @@ var UIController = (function() {
     expensesPercentageLabel: ".item__percentage"
   };
 
-  var formatNumbers = function(num, type){
+  var formatNumbers = function(num, type) {
     /*
             + or - before number
             exactly 2 decimal points
@@ -161,30 +161,26 @@ var UIController = (function() {
             2000 -> + 2,000.00
             */
 
-      var num,numSplit, int, dec,type;
-      num = Math.abs(num); // gives and absolute number
-      num = num.toFixed(2); // adds 2 decimal points to the number 
+    var num, numSplit, int, dec, type;
+    num = Math.abs(num); // gives and absolute number
+    num = num.toFixed(2); // adds 2 decimal points to the number
 
-      numSplit = num.split('.');
+    numSplit = num.split(".");
 
-      int = numSplit[0];
-      if(int.length > 3){
+    int = numSplit[0];
+    if (int.length > 3) {
+      int = int.substr(0, int.length - 3) + "," + int.substr(int.length - 3, 3); // input = 32000 output = 32,000
+    }
+    dec = numSplit[1];
 
-        int = int.substr(0,int.length - 3) + ',' + int.substr(int.length - 3 , 3); // input = 32000 output = 32,000
+    return (type === "exp" ? "-" : "+") + " " + int + "." + dec;
+  };
 
-      };
-      dec = numSplit[1];
-
-      return (type === "exp" ? "-" : "+") + " " + int + "." + dec;
-
-    };
-
-    var nodeListForEach = function(list, callback){
-      for(var i = 0; i < list.length; i++){
-        callback(list[i], i);
-      }
-
-    };
+  var nodeListForEach = function(list, callback) {
+    for (var i = 0; i < list.length; i++) {
+      callback(list[i], i);
+    }
+  };
 
   return {
     getInput: function() {
@@ -243,10 +239,16 @@ var UIController = (function() {
     displayBudget: function(obj) {
       var type;
 
-      obj.budget > 0 ? type ='inc' : type = 'exp';
-      document.querySelector(DOMStrings.budgetLabel).textContent = formatNumbers(obj.budget, type);
-      document.querySelector(DOMStrings.incomeLabel).textContent = formatNumbers(obj.totalInc, 'inc');
-      document.querySelector(DOMStrings.expensesLabel).textContent = formatNumbers(obj.totalExp, 'exp');
+      obj.budget > 0 ? (type = "inc") : (type = "exp");
+      document.querySelector(
+        DOMStrings.budgetLabel
+      ).textContent = formatNumbers(obj.budget, type);
+      document.querySelector(
+        DOMStrings.incomeLabel
+      ).textContent = formatNumbers(obj.totalInc, "inc");
+      document.querySelector(
+        DOMStrings.expensesLabel
+      ).textContent = formatNumbers(obj.totalExp, "exp");
 
       if (obj.percentage > 0) {
         document.querySelector(DOMStrings.percentageLabel).textContent =
@@ -282,33 +284,34 @@ var UIController = (function() {
     },
 
     displayPercentages: function(percentages) {
+      var fields = document.querySelectorAll(
+        DOMStrings.expensesPercentageLabel
+      );
 
-      var fields = document.querySelectorAll(DOMStrings.expensesPercentageLabel);
-
-      nodeListForEach(fields, function(current, index){
-
-        if(percentages[index] > 0){
-          current.textContent = percentages[index] + '%';
-        }
-        else{
-          current.textContent = '---';
+      nodeListForEach(fields, function(current, index) {
+        if (percentages[index] > 0) {
+          current.textContent = percentages[index] + "%";
+        } else {
+          current.textContent = "---";
         }
       });
     },
 
-    changedType: function(){
+    changedType: function() {
+      var fields = document.querySelectorAll(
+        DOMStrings.inputType +
+          "," +
+          DOMStrings.inputDescription +
+          "," +
+          DOMStrings.inputValue
+      );
 
-      var fields = document.querySelectorAll(DOMStrings.inputType + ',' + DOMStrings.inputDescription + ',' + DOMStrings.inputValue);
-
-      nodeListForEach(fields, function(current){
-
-        current.classList.toggle('red-focus');
+      nodeListForEach(fields, function(current) {
+        current.classList.toggle("red-focus");
       });
 
-      document.querySelector(DOMStrings.inputBtn).classList.toggle('red');
+      document.querySelector(DOMStrings.inputBtn).classList.toggle("red");
     },
-
-    
 
     getDOMStrings: function() {
       return DOMStrings;
@@ -334,7 +337,9 @@ var controller = (function(budgetCtrl, UICtrl) {
       .querySelector(DOM.container)
       .addEventListener("click", ctrlDeleteItem);
 
-      document.querySelector(DOM.inputType).addEventListener('change', UICtrl.changedType);
+    document
+      .querySelector(DOM.inputType)
+      .addEventListener("change", UICtrl.changedType);
   };
 
   var updateBudget = function() {
